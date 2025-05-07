@@ -46,6 +46,21 @@ app.get("/palette/get/:id", async (req, res) => {
   }
 });
 
+// Update a Palette
+app.put("/palette/update/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, color1, color2, color3, color4 } = req.body;
+    const updatePalette = await pool.query(
+      "UPDATE palettes SET name = $1, color1 = $2, color2 = $3, color3 = $4, color4 = $5 WHERE palette_id = $6",
+      [name, color1, color2, color3, color4, id]
+    );
+    res.json("Palette was updated!");
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
 app.listen(3000, () => {
   console.log("Server is running on port 3000...!");
 });
