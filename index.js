@@ -7,7 +7,7 @@ app.use(cors());
 app.use(express.json());
 
 // Create Palette
-app.post("/insert_palette", async (req, res) => {
+app.post("/palette/insert", async (req, res) => {
   try {
     const { name, color1, color2, color3, color4 } = req.body;
     console.log(req.body);
@@ -22,10 +22,25 @@ app.post("/insert_palette", async (req, res) => {
 });
 
 // Get all Palettes
-app.get("/show_palettes", async (req, res) => {
+app.get("/palette/show", async (req, res) => {
   try {
     const allPalettes = await pool.query("SELECT * FROM palettes");
     res.json(allPalettes.rows);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+// Get a Palette
+app.get("/palette/get/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    console.log(id);
+    const palette = await pool.query(
+      "SELECT * FROM palettes WHERE palette_id = $1",
+      [id]
+    );
+    res.json(palette.rows[0]);
   } catch (err) {
     console.error(err.message);
   }
