@@ -9,10 +9,11 @@ app.use(express.json());
 // Create Palette
 app.post("/palette", async (req, res) => {
   try {
-    const { palette } = req.body;
+    const { name, color1, color2, color3, color4 } = req.body;
+    console.log(req.body);
     const newPalette = await pool.query(
-      "INSERT INTO palettes (palette) VALUES ($1)",
-      [palette]
+      "INSERT INTO palettes (name,color1,color2,color3,color4) VALUES ($1,$2,$3,$4,$5)",
+      [name, color1, color2, color3, color4]
     );
     res.json(newPalette);
   } catch (err) {
