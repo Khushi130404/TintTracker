@@ -7,7 +7,7 @@ app.use(cors());
 app.use(express.json());
 
 // Create Palette
-app.post("/palette", async (req, res) => {
+app.post("/insert_palette", async (req, res) => {
   try {
     const { name, color1, color2, color3, color4 } = req.body;
     console.log(req.body);
