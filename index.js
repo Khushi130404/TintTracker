@@ -61,6 +61,20 @@ app.put("/palette/update/:id", async (req, res) => {
   }
 });
 
+// Delete a Palette
+app.delete("/palette/delete/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletePalette = await pool.query(
+      "DELETE FROM palettes WHERE palette_id = $1",
+      [id]
+    );
+    res.json("Palette was deleted!");
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
 app.listen(3000, () => {
   console.log("Server is running on port 3000...!");
 });
