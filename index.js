@@ -12,10 +12,20 @@ app.post("/insert_palette", async (req, res) => {
     const { name, color1, color2, color3, color4 } = req.body;
     console.log(req.body);
     const newPalette = await pool.query(
-      "INSERT INTO palettes (name,color1,color2,color3,color4) VALUES ($1,$2,$3,$4,$5)",
+      "INSERT INTO palettes (name,color1,color2,color3,color4) VALUES ($1,$2,$3,$4,$5) RETURNING *",
       [name, color1, color2, color3, color4]
     );
-    res.json(newPalette);
+    res.json(newPalette.rows[0]);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+// Get all Palettes
+app.get("/show_palettes", async (req, res) => {
+  try {
+    const allPalettes = await pool.query("SELECT * FROM palettes");
+    res.json(allPalettes.rows);
   } catch (err) {
     console.error(err.message);
   }
